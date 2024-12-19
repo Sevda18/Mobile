@@ -1,3 +1,8 @@
+package utils;
+
+import filters.Specification;
+import models.Product;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

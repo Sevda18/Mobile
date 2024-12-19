@@ -1,3 +1,5 @@
+package models;
+
 public class Car extends Product {
     private String brand;
     private int year;

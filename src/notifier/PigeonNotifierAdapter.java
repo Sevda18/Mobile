@@ -1,3 +1,5 @@
+package notifier;
+
 public class PigeonNotifierAdapter implements Notifier {
     private PigeonNotifier pigeonNotifier;
 

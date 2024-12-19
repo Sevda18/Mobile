@@ -1,3 +1,5 @@
+package models;
+
 public class Boat extends Product {
     private double length;
     private String material;

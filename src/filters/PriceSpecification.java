@@ -1,3 +1,7 @@
+package filters;
+
+import models.Product;
+
 public class PriceSpecification implements Specification<Product> {
     private double minPrice;
     private double maxPrice;

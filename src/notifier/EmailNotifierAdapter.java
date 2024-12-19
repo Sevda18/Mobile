@@ -1,3 +1,5 @@
+package notifier;
+
 public class EmailNotifierAdapter implements Notifier {
     private EmailNotifier emailNotifier;
 

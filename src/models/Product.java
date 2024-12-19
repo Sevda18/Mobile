@@ -1,3 +1,5 @@
+package models;
+
 // Абстрактен клас за общите свойства на всички продукти
 public abstract class Product {
     private String name;

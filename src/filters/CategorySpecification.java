@@ -1,3 +1,7 @@
+package filters;
+
+import models.Product;
+
 public class CategorySpecification implements Specification<Product> {
     private String category;
 

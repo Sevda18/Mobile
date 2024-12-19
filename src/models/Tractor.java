@@ -1,3 +1,5 @@
+package models;
+
 public class Tractor extends Product {
     private int horsepower;
     private String fuelType;

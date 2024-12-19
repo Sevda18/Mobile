@@ -1,3 +1,5 @@
+package models;
+
 public class Motorcycle extends Product {
     private String engineType;
     private int engineCapacity;

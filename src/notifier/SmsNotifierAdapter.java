@@ -1,3 +1,5 @@
+package notifier;
+
 public class SmsNotifierAdapter implements Notifier {
     private SmsNotifier smsNotifier;
 

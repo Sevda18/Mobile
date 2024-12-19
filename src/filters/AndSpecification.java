@@ -1,3 +1,5 @@
+package filters;
+
 public class AndSpecification<T> implements Specification<T> {
     private Specification<T> first;
     private Specification<T> second;
