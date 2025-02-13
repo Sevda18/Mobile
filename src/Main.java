@@ -1,51 +1,104 @@
+import models.Car;
+import models.Product;
+import utils.ProductFilter;
+import filters.Specification;
+import filters.PriceSpecification;
+import filters.CategorySpecification;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import filters.Specification;
-import utils.ProductFilter;
-import filters.CategorySpecification;
-import filters.PriceSpecification;
-import filters.AndSpecification;
-import models.Product;
-import models.Car;
-import models.Boat;
-import notifier.EmailNotifier;
-import notifier.EmailNotifierAdapter;
-import notifications.NotificationService;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Main {
+    private static final List<Product> products = new ArrayList<>();
+    private static final ProductFilter productFilter = new ProductFilter();
+    private static ResourceBundle messages;
+    private static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        List<Product> products = new ArrayList<>();
-        products.add(new Car("Tesla Model 3", "Electric Car", 45000, "Vehicle", "Tesla", 2022));
-        products.add(new Car("Toyota Corolla", "Sedan Car", 25000, "Vehicle", "Toyota", 2020));
-        products.add(new Boat("Yamaha SX190", "Sport Boat", 35000, "Watercraft", 5.5, "Fiberglass"));
-        products.add(new Boat("Bayliner Element", "Fishing Boat", 20000, "Watercraft", 4.3, "Aluminum"));
-        products.add(new Car("Ford F-150", "Truck", 30000, "Vehicle", "Ford", 2021));
-        products.add(new Boat("Sea Ray", "Luxury Boat", 55000, "Watercraft", 8.0, "Composite"));
+        loadLanguage("en"); // По подразбиране английски
 
-        Specification<Product> vehicleCategorySpec = new CategorySpecification("Vehicle");
-        Specification<Product> priceRangeSpec = new PriceSpecification(20000, 40000);
+        System.out.println(messages.getString("welcome"));
+        seedData(); // Зареждане на примерни данни
 
-        Specification<Product> combinedVehicleSpec = new AndSpecification<>(vehicleCategorySpec, priceRangeSpec);
+        while (true) {
+            System.out.println(messages.getString("menu"));
+            String choice = scanner.nextLine();
 
-        ProductFilter filter = new ProductFilter();
-        List<Product> filteredVehicles = filter.filter(products, combinedVehicleSpec);
-
-        System.out.println("Filtered Vehicles:");
-        for (Product product : filteredVehicles) {
-            System.out.println(product.getName() + " - " + product.getPrice() + " USD - " + product.getSpecificDetails());
+            switch (choice) {
+                case "1":
+                    listCars();
+                    break;
+                case "2":
+                    filterCars();
+                    break;
+                case "3":
+                    changeLanguage();
+                    break;
+                case "4":
+                    showStatistics();
+                    break;
+                case "5":
+                    System.out.println(messages.getString("exit"));
+                    return;
+                default:
+                    System.out.println(messages.getString("invalid"));
+            }
         }
+    }
 
-        NotificationService notificationService = new NotificationService();
+    private static void seedData() {
+        products.add(new Car("BMW X5", "Luxury SUV", 50000, "SUV", "BMW", 2018));
+        products.add(new Car("Toyota Corolla", "Reliable sedan", 20000, "Sedan", "Toyota", 2016));
+        products.add(new Car("Ford Mustang", "Classic muscle car", 35000, "Sport", "Ford", 2020));
+    }
 
-        notificationService.addNotifier(new EmailNotifierAdapter());
-
-        System.out.println("\nSending notifications for filtered vehicles...");
-        for (Product product : filteredVehicles) {
-            notificationService.sendNotification(
-                    "recipient@example.com",
-                    "Available Vehicle: " + product.getName() + " for " + product.getPrice() + " USD."
-            );
+    private static void listCars() {
+        System.out.println(messages.getString("list"));
+        for (Product product : products) {
+            System.out.println(product.getName() + " - $" + product.getPrice());
         }
+    }
+
+    private static void filterCars() {
+        System.out.println(messages.getString("filter_prompt"));
+        System.out.print(messages.getString("min_price"));
+        double minPrice = scanner.nextDouble();
+        System.out.print(messages.getString("max_price"));
+        double maxPrice = scanner.nextDouble();
+        scanner.nextLine();
+
+        Specification<Product> spec = new PriceSpecification(minPrice, maxPrice);
+        List<Product> filteredProducts = productFilter.filter(products, spec);
+
+        System.out.println(messages.getString("filtered_results"));
+        for (Product product : filteredProducts) {
+            System.out.println(product.getName() + " - $" + product.getPrice());
+        }
+    }
+
+    private static void changeLanguage() {
+        System.out.println("Choose language: (1) English, (2) Български");
+        String langChoice = scanner.nextLine();
+
+        if ("1".equals(langChoice)) {
+            loadLanguage("en");
+        } else if ("2".equals(langChoice)) {
+            loadLanguage("bg");
+        } else {
+            System.out.println(messages.getString("invalid"));
+        }
+    }
+
+    private static void loadLanguage(String lang) {
+        Locale locale = new Locale(lang);
+        messages = ResourceBundle.getBundle("messages", locale);
+    }
+
+    private static void showStatistics() {
+        double avgPrice = products.stream().mapToDouble(Product::getPrice).average().orElse(0);
+        System.out.println(messages.getString("avg_price") + avgPrice);
     }
 }

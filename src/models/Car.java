@@ -10,9 +10,16 @@ public class Car extends Product {
         this.year = year;
     }
 
+    public String getBrand() {
+        return brand;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
     @Override
     public String getSpecificDetails() {
         return "Brand: " + brand + ", Year: " + year;
     }
 }
-

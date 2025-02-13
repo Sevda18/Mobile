@@ -1,0 +1,10 @@
+welcome=Welcome to the Car Listings System!
+menu=Choose an option:\n1. List all cars\n2. Filter cars\n3. Change language\n4. Show statistics\n5. Exit
+exit=Exiting the system...
+invalid=Invalid choice. Try again.
+list=Available cars:
+filter_prompt=Enter price range for filtering:
+min_price=Minimum price: 
+max_price=Maximum price: 
+filtered_results=Cars matching the criteria:
+avg_price=Average car price: $
