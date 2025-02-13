@@ -15,14 +15,12 @@ public class ResourceLoader {
 
     private void loadMessages(String language) {
         try {
-            // Пътят трябва да сочи към директорията src/
-            String filePath = "src/" + language + ".txt";  // Път за зареждане на файла
+            String filePath = "src/" + language + ".txt";
 
             Files.lines(Paths.get(filePath))
                     .forEach(line -> {
-                        String[] parts = line.split("=", 2); // Разделяме по "="
+                        String[] parts = line.split("=", 2);
                         if (parts.length == 2) {
-                            // Заменяме \n с нов ред
                             messages.put(parts[0], parts[1].replace("\\n", "\n"));
                         }
                     });
